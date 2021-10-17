@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="input-form">
+        <div>
+            <label for="min-x">Min x</label>
+            <input type="text" name="min-x" id="min-x">
+            <label for="max-x">Max x</label>
+            <input type="text" name="max-x" id="max-x">
+            <label for="min-y">Min y</label>
+            <input type="text" name="min-y" id="min-y">
+            <label for="max-y">Max y</label>
+            <input type="text" name="max-y" id="max-y">
+            <label for="width">Width</label>
+            <input type="text" name="width" id="width">
+            <label for="height">Height</label>
+            <input type="text" name="height" id="height">
+        </div>
+
+        <button width="300px" height="150px" onclick="send_request();">Send request</button>
+    </div>
+
+    <!-- "width": 1920,
+    "height": 1080,
+    "min_x": parseInt(document.getElementById("min-x"), 2),
+    "max_x": 1.5,
+    "min_y": -1.5,
+    "max_y": 1.5 -->
+
+    <script>
+        document.getElementById("width").value = 1920;
+        document.getElementById("height").value = 1080;
+        document.getElementById("min-x").value = -2.5;
+        document.getElementById("max-x").value = 1.5;
+        document.getElementById("min-y").value = -1.5;
+        document.getElementById("max-y").value = 1.5;
+
+        function send_request(e) {
+            const url = 'http://127.0.0.1:5000/test/image'
+            data = {
+                "width": document.getElementById("width").value,
+                "height": document.getElementById("height").value,
+                "min_x": document.getElementById("min-x").value,
+                "max_x": document.getElementById("max-x").value,
+                "min_y": document.getElementById("min-y").value,
+                "max_y": document.getElementById("max-y").value,
+            }
+            params = {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+                mode: 'cors'
+            }
+            fetch(url, params)
+            .then(data => {return data.json()})
+            .then(res => {console.log(res)})
+            .catch(error => console.log(error))
+        }
+
+        function submitHandler(submitEvent) {
+            alert("Stopping with value: " + text.value);
+            submitEvent.preventDefault();
+        }
+
+        document.getElementById("input-form").addEventListener("submit", submitHandler);
+
+    </script>
+</body>
+</html>

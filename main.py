@@ -1,31 +1,42 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 
 from PIL import Image, ImageDraw
 
-
 app = Flask(__name__)
+
+cors = CORS(app)
 
 @app.route("/")
 def hello_world():
-    return \
-    """
+
+    text = """
     <p>Hello, world!</p>
     <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"/>
     <img src="/static/myimg.png"/>
     """
 
+    return text
+
 
 @app.route('/test/image', methods=['POST'])
+@cross_origin(origin='*')
 def request_image():
-    print("request")
+    @app.after_request
+    def add_header(response):
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
     json = request.get_json()
     width = int(json.get('width'))
     height = int(json.get('height'))
-    transform_window = Window2D(int(json.get('min_x')), int(json.get('max_x')),
-        int(json.get('min_y')), int(json.get('max_y')))
+    transform_window = Window2D(float(json.get('min_x')), float(json.get('max_x')),
+        float(json.get('min_y')), float(json.get('max_y')))
     
     image_render_request(width, height, transform_window)
-    return jsonify(None)
+
+    response = jsonify({"success": "probably"})
+
+    return response
 
 # window_map = Window2D(-2, 0.5, -1.15, 1.15)
 def image_render_request(pixel_width, pixel_height, cartesian_window):
@@ -109,3 +120,6 @@ def test2():
             pixels[col, row] = (80, value*2, value*2)
     
     img.save('static/myimg.png')
+
+if __name__ == "__main__":
+    app.run()
