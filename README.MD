@@ -8,6 +8,7 @@ This is just a Flask playground to get a bit more familiar with the technology. 
  * Have somewhat adjustable iteration settings
  * Add controls to stop spamming and validate/complete jobs properly
  * Speed up jobs with parallelization and maybe better math or matrices
+ * This still seems to be missing some offsets and navigation tools... also things to change/preserve scaling
 
  ## Other potential Python projects
  * Some kind of Django site or wiki
